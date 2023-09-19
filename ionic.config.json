@@ -1,0 +1,7 @@
+{
+  "name": "demo-http-states",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
