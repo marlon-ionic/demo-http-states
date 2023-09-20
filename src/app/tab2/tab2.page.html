@@ -1,17 +1,55 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Api Pipe
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="success" (click)="showWithDelay()">
+        <ion-icon slot="icon-only" name="hourglass"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" (click)="showErrorState()">
+        <ion-icon slot="icon-only" name="bug"></ion-icon>
+      </ion-button>
+      <ion-button (click)="reload()">
+        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Api Pipe</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ng-container *ngIf="user$ | api | async  as response">
+    <ng-container *ngIf="response.loading">
+      <div class="response-container">
+        <ion-spinner></ion-spinner>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="response.error">
+      <div class="response-container">
+        <h2>Error</h2>
+        <ion-icon name="warning-outline"></ion-icon>
+        <p *ngIf="response.error?.message">{{response.error.message}}</p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="response.data">
+      <ion-list>
+        <ion-item *ngFor="let user of response.data">
+          <ion-avatar slot="start">
+            <img [src]="user.picture.thumbnail" />
+          </ion-avatar>
+          <ion-label>
+            <h2>{{user.name.first}} {{user.name.last}}</h2>
+            <p>{{user.email}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+  </ng-container>
+
 </ion-content>
